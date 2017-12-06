@@ -1,0 +1,49 @@
+FUNCTION_BLOCK tipper
+
+VAR_INPUT
+	problema : REAL; //0 .. 4
+	buffer : REAL; //0 .. 2
+END_VAR
+
+// Define output variable
+VAR_OUTPUT
+	tempo : REAL; // 0 .. 2 
+END_VAR
+
+FUZZIFY problema
+	TERM muito alto := (30000, 1) (100000,0) ;
+	TERM alto := (30000, 1) (100000,0) ;
+	TERM medio := (50000, 0) (1400000,1) (1800000,1) (2500000,0) ;
+	TERM baixo := (2300000, 0) (2800000,1) (3500000,1) (4000000,0) ;
+	TERM muito baixo := (2300000, 0) (2800000,1) (3500000,1) (4000000,0) ;
+END_FUZZIFY
+
+FUZZIFY buffer
+	TERM maximo := (30000, 1) (100000,0) ;
+	TERM medio := (50000, 0) (1400000,1) (1800000,1) (2500000,0) ;
+	TERM minimo := (2300000, 0) (2800000,1) (3500000,1) (4000000,0) ;
+END_FUZZIFY
+
+DEFUZZIFY atividade
+	TERM limpeza := (0.5,0) (0.7,1) (0.8,0);
+	TERM inspecao := (0.75,0) (1,1) (1.5,0);
+	TERM lubrificacao := (1.25,0) (1.75,1) (2,0);
+	TERM reaperto := (1.25,0) (1.75,1) (2,0);
+
+	METHOD : COG;		
+	DEFAULT := 0;	
+END_DEFUZZIFY
+
+RULEBLOCK rules
+	AND : MIN;	// Use 'min' for 'and'
+	ACT : MIN;	// Use 'min' activation method
+	ACCU : MAX;	// Use 'max' accumulation method
+
+	RULE 1 : IF problema IS muito alto AND buffer IS maximo THEN tempo IS ;
+	RULE 2 : IF color IS better THEN weight IS range1;
+	RULE 3 : IF color IS good THEN weight IS range2;
+	RULE 4 : IF color IS poor THEN weight IS range3;
+	RULE 3 : IF color IS verypoor THEN weight IS range3;
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
