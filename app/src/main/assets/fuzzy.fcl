@@ -15,8 +15,8 @@ FUZZIFY problema
 END_FUZZIFY
 
 FUZZIFY buffer
-	TERM maximo := (15,0) (30,1) ;
-	TERM medio := (5,0) (15,1) (30,0) ;
+	TERM maximo := (15,0) (32,1) ;
+	TERM medio := (5,0) (15,1) (32,0) ;
 	TERM minimo := (5,1) (15,0) ;
 END_FUZZIFY
 
