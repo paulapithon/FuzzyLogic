@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="problemas">
+        <item>@string/problema_eletrodo</item>
+        <item>@string/problema_manual</item>
+        <item>@string/problema_automatico</item>
+        <item>@string/problema_pecas</item>
+        <item>@string/problema_falha</item>
+        <item>@string/problema_aplicacao</item>
+        <item>@string/problema_sistema</item>
+    </string-array>
+</resources>

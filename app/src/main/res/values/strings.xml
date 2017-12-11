@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Fuzzy FCA</string>
+
+    <string name="problema_eletrodo">Troca de Eletrodo</string>
+    <string name="problema_manual">Falta de Material Manual</string>
+    <string name="problema_automatico">Falta de Material Automático</string>
+    <string name="problema_pecas">Falha de Ausência de Peças</string>
+    <string name="problema_falha">Robô em Falha</string>
+    <string name="problema_aplicacao">Robô em Falha de Aplicação</string>
+    <string name="problema_sistema">Robô em Falha de Sistema</string>
+
 </resources>
