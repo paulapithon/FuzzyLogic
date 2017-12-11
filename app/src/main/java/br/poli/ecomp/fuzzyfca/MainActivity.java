@@ -39,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
         mSaida = findViewById(R.id.saida);
         mBuffer = findViewById(R.id.buffer);
         mSpinner = findViewById(R.id.spinner);
+
+        buffer = 0;
+        problema = 0;
     }
 
     public void getFuzzyAnswer(View v) {
@@ -54,26 +57,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadFuzzy() {
-        //Carrega arquivo .flc
-        try {
-            InputStream inputStream = getAssets().open("fuzzy.fcl");
-            FIS fis = FIS.load(inputStream, true);
+        getProblema();
+        if (buffer <= 32 && buffer >= 0) {
+            //Carrega arquivo .flc
+            try {
+                InputStream inputStream = getAssets().open("fuzzy.fcl");
+                FIS fis = FIS.load(inputStream, true);
 
-            if (fis != null) {
+                if (fis != null) {
 
-                getProblema();
-                // Definir inputs
-                fis.setVariable("problema", problema);
-                fis.setVariable("buffer", buffer);
-                fis.evaluate();
+                    // Definir inputs
+                    fis.setVariable("problema", problema);
+                    fis.setVariable("buffer", buffer);
+                    fis.evaluate();
 
-                // Mostra gráfico da saída
-                Variable atividade = fis.getVariable("atividade");
-                mSaida.setText(Html.fromHtml(getResultado(atividade)));
+                    // Mostra gráfico da saída
+                    Variable atividade = fis.getVariable("atividade");
+                    mSaida.setText(Html.fromHtml(getResultado(atividade)));
+                }
+
+                Log.d("FUZZY", "A saída é: " + fis.getVariable("atividade").getValue());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-            Log.d("FUZZY", "A saída é: " + fis.getVariable("atividade").getValue());
-        } catch (IOException e) { e.printStackTrace(); }
+        }
     }
 
     private void getProblema() {
