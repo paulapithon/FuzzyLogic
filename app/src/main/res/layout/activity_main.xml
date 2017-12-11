@@ -63,7 +63,9 @@
         android:background="@drawable/background_select"
         android:textAlignment="center"
         android:textSize="24sp"
+        android:lines="3"
         android:padding="10dp"
+        android:gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/checar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
