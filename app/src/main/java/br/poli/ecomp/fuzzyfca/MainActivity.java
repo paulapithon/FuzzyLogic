@@ -94,6 +94,18 @@ public class MainActivity extends AppCompatActivity {
             problema = 37.56;
         } else if (item.equals(resources.getString(R.string.problema_sistema))) {
             problema = 33.4;
+        } else if (item.equals(resources.getString(R.string.problema_barreirafalha))) {
+            problema = 54.4;
+        } else if (item.equals(resources.getString(R.string.problema_trabalho))) {
+            problema = 154;
+        } else if (item.equals(resources.getString(R.string.problema_repouso))) {
+            problema = 131;
+        } else if (item.equals(resources.getString(R.string.problema_timeoutrepouso))) {
+            problema = 36.74;
+        } else if (item.equals(resources.getString(R.string.problema_timeouttrabalho))) {
+            problema = 35.8;
+        } else if (item.equals(resources.getString(R.string.problema_profinet))) {
+            problema = 536.27;
         } else {
             problema = 0;
         }

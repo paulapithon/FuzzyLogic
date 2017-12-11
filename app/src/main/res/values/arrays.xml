@@ -8,5 +8,11 @@
         <item>@string/problema_falha</item>
         <item>@string/problema_aplicacao</item>
         <item>@string/problema_sistema</item>
+        <item>@string/problema_barreirafalha</item>
+        <item>@string/problema_trabalho</item>
+        <item>@string/problema_repouso</item>
+        <item>@string/problema_timeouttrabalho</item>
+        <item>@string/problema_timeoutrepouso</item>
+        <item>@string/problema_profinet</item>
     </string-array>
 </resources>

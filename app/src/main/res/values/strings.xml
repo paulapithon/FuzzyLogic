@@ -8,5 +8,12 @@
     <string name="problema_falha">Robô em Falha</string>
     <string name="problema_aplicacao">Robô em Falha de Aplicação</string>
     <string name="problema_sistema">Robô em Falha de Sistema</string>
+    <string name="problema_barreirafalha">Barreira em falha</string>
+    <string name="problema_trabalho">Falha na posição a trabalho</string>
+    <string name="problema_repouso">Falha na posição a repouso</string>
+    <string name="problema_timeouttrabalho">Time-out falha N/A a trabalho</string>
+    <string name="problema_timeoutrepouso">Time-out falha N/A a repouso</string>
+    <string name="problema_profinet">Profinet em falha</string>
+
 
 </resources>
