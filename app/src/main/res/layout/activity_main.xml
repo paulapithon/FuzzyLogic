@@ -31,7 +31,7 @@
         android:background="@drawable/background_select"
         android:ems="10"
         android:hint="Buffer (peças)"
-        android:inputType="numberDecimal"
+        android:inputType="number"
         android:textAlignment="center"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
