@@ -17,10 +17,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import net.sourceforge.jFuzzyLogic.FIS;
+import net.sourceforge.jFuzzyLogic.rule.Rule;
+import net.sourceforge.jFuzzyLogic.rule.RuleBlock;
 import net.sourceforge.jFuzzyLogic.rule.Variable;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.CollationElementIterator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     double problema;
     double buffer;
+    double recente;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         buffer = 0;
         problema = 0;
+        recente = 4;
     }
 
     public void getFuzzyAnswer(View v) {
@@ -70,12 +79,16 @@ public class MainActivity extends AppCompatActivity {
 
                     // Definir inputs
                     fis.setVariable("problema", problema);
+                    fis.setVariable("recente", 4);
                     fis.setVariable("buffer", buffer);
                     fis.evaluate();
 
-                    // Mostra gráfico da saída
-                    Variable atividade = fis.getVariable("atividade");
-                    mSaida.setText(Html.fromHtml(getResultado(atividade)));
+                    List<Double> rules = new ArrayList<>();
+                    for(Rule rule : fis.getFunctionBlock("tipper").getFuzzyRuleBlock("rules").getRules()) {
+                        rules.add(rule.getDegreeOfSupport());
+                    }
+
+                    mSaida.setText(Html.fromHtml(getResultado(rules)));
                 }
 
                 Log.d("FUZZY", "A saída é: " + fis.getVariable("atividade").getValue());
@@ -132,44 +145,39 @@ public class MainActivity extends AppCompatActivity {
         buffer = Double.parseDouble(mBuffer.getText().toString());
     }
 
-    private String getResultado(Variable variable) {
-        double resultado = variable.getValue();
+    private List<String> getCiclo () {
+        List<String> ciclos = new ArrayList<>();
+        ciclos.add("inspeção");
+        ciclos.add("limpeza");
+        ciclos.add("reaperto");
+        ciclos.add("lubrificação");
+        ciclos.add("nenhuma");
 
-        //Checar grau de certeza do resultado
-        int atividade, certeza;
-        double flutuante = resultado - (int) resultado;
-        if (flutuante > 0.5) {
-            atividade = (int) resultado + 1;
-            certeza = (int) (flutuante * 100);
-        } else {
-            atividade = (int) resultado;
-            certeza = 100 - (int) (flutuante * 100);
-        }
+        return ciclos;
+    }
 
-        //Retorno final em html
-        String retorno = "Realizar atividade <b>";
-        switch (atividade) {
-            case 0:
-                retorno += "limpeza";
-                break;
-            case 1:
-                retorno += "inspeção";
-                break;
-            case 2:
-                retorno += "lubrificação";
-                break;
-            case 3:
-                retorno += "reaperto";
-                break;
-            case 4:
-                retorno += "nenhuma";
-                break;
+    private String getResultado(List<Double> values) {
+        //Ordenar lista do maior tempo pro menor
+        List<Double> sorted = new ArrayList<>(values);
+        Collections.sort(sorted);
+        Collections.reverse(sorted);
+
+        //Pegar ciclo de maior valor
+        int index = values.indexOf(sorted.get(0));
+
+        //Se tiver side realizada agora, não repetir
+        if (recente == index) {
+            index = values.indexOf(sorted.get(1));
         }
+        recente = index;
+
+        int certeza = (int) (values.get(index) * 100);
+
         //Tempo convertido em minutos
         int tempo = (int) (problema / 60 + buffer * 0.75);
-        retorno += "</b> em <b>" + tempo + " minutos</b> com <b>" + certeza + "%</b> de sucesso.";
 
-        return retorno;
+        //Retorno final em html
+        return "Realizar atividade <b>" + getCiclo().get(index) + "</b> em <b>" + tempo + " minutos</b> com <b>" + certeza + "%</b> de sucesso.";
 
     }
 

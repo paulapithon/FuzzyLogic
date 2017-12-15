@@ -3,6 +3,7 @@ FUNCTION_BLOCK tipper
 VAR_INPUT
 	problema : REAL;
 	buffer : REAL;
+	recente : REAL;
 END_VAR
 
 VAR_OUTPUT
@@ -10,14 +11,23 @@ VAR_OUTPUT
 END_VAR
 
 FUZZIFY problema
-	TERM alto := (0,0) (800,1) ;
-	TERM baixo := (0,1) (800,0) ;
+	TERM alto := (300,0) (600,1) ;
+	TERM medio := (0,0) (300,1) (600,0);
+	TERM baixo := (0,1) (300,0) ;
 END_FUZZIFY
 
 FUZZIFY buffer
 	TERM maximo := (15,0) (32,1) ;
 	TERM medio := (5,0) (15,1) (32,0) ;
 	TERM minimo := (5,1) (15,0) ;
+END_FUZZIFY
+
+FUZZIFY recente
+	TERM limpeza := 0;
+    TERM inspecao := 1;
+    TERM lubrificacao := 2;
+    TERM reaperto := 3;
+    TERM nenhuma := 4;
 END_FUZZIFY
 
 DEFUZZIFY atividade
@@ -36,10 +46,10 @@ RULEBLOCK rules
 	ACT : MIN;	
 	ACCU : MAX;	
 
-	RULE 1 : IF buffer IS minimo AND problema IS alto THEN atividade IS inspecao;
-	RULE 2 : IF buffer IS medio AND problema IS baixo THEN atividade IS limpeza;
-	RULE 3 : IF buffer IS maximo AND problema IS baixo THEN atividade IS reaperto;
-	RULE 4 : IF buffer IS maximo AND problema IS alto THEN atividade IS lubrificacao;
+	RULE 1 : IF buffer IS minimo AND (problema IS alto OR problema IS medio) THEN atividade IS inspecao;
+	RULE 2 : IF buffer IS medio AND (problema IS baixo OR problema IS medio) THEN atividade IS limpeza;
+	RULE 3 : IF buffer IS maximo AND (problema IS baixo OR problema IS medio) THEN atividade IS reaperto;
+	RULE 4 : IF buffer IS maximo AND (problema IS alto OR problema IS medio) THEN atividade IS lubrificacao;
 	RULE 5 : IF buffer IS minimo AND problema IS baixo THEN atividade IS nenhuma;
 END_RULEBLOCK
 
